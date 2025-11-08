@@ -6,13 +6,13 @@
 #define SS_PIN 10
 #define SERVO_PIN 8
 
-int yled = 7;
-int kled = 6;
+int Gled = 7;
+int Rled = 6;
 
 Servo motor;
-MFRC522 rfid(SS_PIN, RST_PIN);  // Dikkat: SS_PIN önce gelmeli
+MFRC522 rfid(SS_PIN, RST_PIN); 
 
-byte ID[4] = {211, 184, 115, 166};  // Tanımlı kart UID'si (örnek)
+byte ID[4] = {0,0,0,0}; #Enter your card ID
 
 void setup() {
   motor.attach(SERVO_PIN);
@@ -23,7 +23,7 @@ void setup() {
   pinMode(yled, OUTPUT);
   digitalWrite(yled, HIGH);
   digitalWrite(kled, HIGH);
-  Serial.println("Sistem hazır...");
+  Serial.println("System ready...");
 }
 
 void loop() {
@@ -34,7 +34,7 @@ void loop() {
       rfid.uid.uidByte[1] == ID[1] &&
       rfid.uid.uidByte[2] == ID[2] &&
       rfid.uid.uidByte[3] == ID[3]) {
-    Serial.println("Kapı Açıldı!");
+    Serial.println("Door Open!");
     ekranaYazdir();
     motor.write(90);
     digitalWrite(yled, LOW);
@@ -45,7 +45,7 @@ void loop() {
     digitalWrite(kled, HIGH);
     delay(1000);
   } else {
-    Serial.println("Yetkisiz Kart!");
+    Serial.println("Wrong Card!");
     digitalWrite(yled, HIGH);
     digitalWrite(kled, LOW);
     ekranaYazdir();
